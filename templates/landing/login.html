@@ -1,0 +1,38 @@
+{% extends 'layout_1.html' %}
+<!---->
+{% load static %}
+<!---->
+{% block content %}
+<!---->
+
+<section class="login__section">
+  <div class="login__container">
+    <div>
+      <h2>Welcome Back!</h2>
+      <p class="login__subheading">Log in to continue your journey with us.</p>
+    </div>
+    <form class="login__form" method="POST" action="{% url 'login' %}">
+      {% csrf_token %}
+
+      <fieldset class="fieldset__group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required />
+      </fieldset>
+
+      <fieldset class="fieldset__group">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required />
+      </fieldset>
+
+      <button class="login__btn" type="submit">Login</button>
+    </form>
+
+    {% if error %}
+    <div class="error-messages">
+      <p class="text-danger">{{ error }}</p>
+    </div>
+    {% endif %}
+  </div>
+  <a href="{% url 'index' %}" type="button" class="btn__back">&larr; Back</a>
+</section>
+{% endblock %}
