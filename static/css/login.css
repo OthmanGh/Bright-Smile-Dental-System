@@ -1,0 +1,157 @@
+.login__section {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 5rem;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  margin: auto 2rem;
+  padding: 1rem;
+  position: relative;
+}
+
+.login__container,
+.login__form {
+  display: flex;
+  flex-direction: column;
+}
+
+.login__container {
+  background-color: var(--color-background);
+  text-align: center;
+  color: var(--color-secondary);
+  gap: 4rem;
+  border: 1px solid var(--color-secondary);
+  padding: 5rem 10rem;
+  border-radius: 0.4rem;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease-in-out;
+}
+
+.login__container h2 {
+  font-size: 3.2rem;
+  margin-bottom: 2rem;
+}
+
+.login__subheading {
+  color: var(--color-secondary);
+}
+
+.login__form {
+  gap: 2rem;
+}
+
+.fieldset__group {
+  display: flex;
+  flex-direction: column;
+  text-align: start;
+  gap: 0.4rem;
+}
+
+.fieldset__group:last-of-type {
+  margin-bottom: 3rem;
+}
+
+.fieldset__group label {
+  font-size: 1.4rem;
+  font-weight: 500;
+}
+
+.fieldset__group input,
+.login__btn {
+  padding: 0.5rem 1rem;
+  width: 100%;
+  border-radius: 0.3rem;
+  border: 1px solid var(--color-secondary);
+}
+
+.fieldset__group input:focus {
+  outline: none;
+}
+
+.login__btn {
+  background-color: var(--color-secondary);
+  border: 1px solid var(--color-secondary);
+  color: var(--color-accent);
+  font-weight: bold;
+  transition: all 0.3s ease-in-out;
+  padding: 1rem 1.5rem;
+}
+
+.login__btn:hover {
+  background-color: var(--color-accent);
+  color: var(--color-secondary);
+}
+
+.btn__back:link,
+.btn__back:visited {
+  border: 1px solid var(--color-accent);
+  border-radius: 0.4rem;
+  color: var(--color-accent);
+  text-decoration: none;
+  font-weight: bold;
+  transition: all 0.3s ease-in-out;
+  padding: 1rem 1.5rem;
+  background-color: transparent;
+  color: var(--color-accent);
+  font-size: 1.6rem;
+  display: block;
+  align-self: flex-start;
+  margin-left: 3rem;
+}
+
+.btn__back:hover,
+.btn__back:active {
+  border: 1px solid var(--color-accent-dark);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transform: translateY(-2px);
+  background-color: var(--color-accent);
+  color: var(--color-secondary);
+}
+
+@media (max-width: 768px) {
+  .login__container {
+    padding: 3rem;
+    gap: 3rem;
+  }
+
+  .login__container h2 {
+    font-size: 2.5rem;
+  }
+
+  .fieldset__group input,
+  .login__btn {
+    min-width: 25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .login__container {
+    padding: 2rem;
+    gap: 2rem;
+    border: none;
+  }
+
+  .login__container h2 {
+    font-size: 2rem;
+  }
+
+  .fieldset__group input,
+  .login__btn {
+    min-width: 100%;
+  }
+
+  .fieldset__group input,
+  .login__btn {
+    padding: 0.8rem 1.2rem;
+  }
+
+  .login__section {
+    margin: 0 1rem;
+  }
+
+  .btn__back:link,
+  .btn__back:visited {
+    margin-left: 0rem;
+  }
+}
