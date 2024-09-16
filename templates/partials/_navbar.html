@@ -1,0 +1,13 @@
+{% load static %}
+
+<nav class="navigation">
+  <div class="brand__container">
+    <img
+      src="{% static 'imgs/dentist-tooth-svgrepo-com.svg' %}"
+      alt="teeth logo"
+    />
+
+    <h2>Bright Smile</h2>
+  </div>
+  <a href="{% url 'login' %}" class="btn__login">Login</a>
+</nav>
