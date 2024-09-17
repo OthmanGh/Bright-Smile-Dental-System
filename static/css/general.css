@@ -16,13 +16,20 @@ html {
   font-size: 62.5%;
 }
 
+:root {
+  --color-background: #f9f7f7;
+  --color-secondary: #000046;
+  --color-primary: #1cb5e0;
+  --color-accent: #dbe2ef;
+  --gradient-primary: linear-gradient(90deg, #000046, #1cb5e0);
+}
+
 body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   font-family: 'Open Sans', sans-serif;
   font-size: 1.6rem;
   min-height: 100vh;
-  background: var(--gradient-primary);
 }
 
 img,
@@ -63,12 +70,4 @@ h4,
 h5,
 h6 {
   font-family: 'Poppins', sans-serif;
-}
-
-:root {
-  --color-background: #f9f7f7;
-  --color-secondary: #000046;
-  --color-primary: #1cb5e0;
-  --color-accent: #dbe2ef;
-  --gradient-primary: linear-gradient(90deg, #000046, #1cb5e0);
 }
