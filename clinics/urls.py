@@ -1,4 +1,3 @@
-# clinics/urls.py
 from django.urls import path
 from .views import clinics_list, clinic_detail
 
