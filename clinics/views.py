@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Clinic
 from .forms import ClinicForm
+from doctors.forms import DoctorClinicAffiliationForm
 
 @login_required
 def clinics_list(request):
@@ -32,3 +33,23 @@ def clinic_detail(request, pk):
     }
     return render(request, 'clinics/clinic_detail.html', context)
 
+
+@login_required
+def add_doctor_affiliation(request, pk):
+    clinic = get_object_or_404(Clinic, pk=pk)
+    
+    if request.method == 'POST':
+        form = DoctorClinicAffiliationForm(request.POST)
+        if form.is_valid():
+            affiliation = form.save(commit=False)
+            affiliation.clinic = clinic
+            affiliation.save()
+            return redirect('clinic_detail', pk=clinic.pk)
+    else:
+        form = DoctorClinicAffiliationForm()
+    
+    context = {
+        'clinic': clinic,
+        'form': form
+    }
+    return render(request, 'clinics/add_doctor_affiliation.html', context)
