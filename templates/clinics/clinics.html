@@ -1,1 +1,47 @@
-<h1>Clinics Page</h1>
+{% extends 'layout_2.html' %} {% block content %}
+
+<div class="container my-5">
+  <h2 class="clinics__header">Clinics Directory</h2>
+
+  <div class="row">
+    {% if clinics %}
+    <!-- -->
+    {% for clinic in clinics %}
+
+    <div class="col-md-4">
+      <div class="clinic__card">
+        <h3>{{ clinic.name }}</h3>
+
+        <div class="card__content">
+          <div class="card__text__layout">
+            <p class="card__text">
+              Patients: <span>{{ clinic.num_patients }}</span>
+            </p>
+            <p class="card__text">City: <span>{{ clinic.city }}</span></p>
+          </div>
+
+          <div class="card__text__layout">
+            <p class="card__text">State: <span>{{ clinic.state }}</span></p>
+            <p class="card__text">
+              Doctors: <span>{{ clinic.num_doctors }}</span>
+            </p>
+          </div>
+          <p>Phone: <span>{{ clinic.phone_number }}</span></p>
+
+          <a href="{% url 'clinic' clinic.pk %}" class="btn__view"
+            >View Details</a
+          >
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+    <!---->
+
+    {% else %}
+    <div class="col-12 text-center py-4">
+      <p>No Clinics Found</p>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
