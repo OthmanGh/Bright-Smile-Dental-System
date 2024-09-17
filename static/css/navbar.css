@@ -1,0 +1,46 @@
+:root {
+  --color-background: #f9f7f7;
+  --color-secondary: #000046;
+  --color-primary: #1cb5e0;
+  --color-accent: #dbe2ef;
+  --gradient-primary: linear-gradient(90deg, #000046, #1cb5e0);
+}
+
+.navbar {
+  margin-bottom: 5rem !important;
+}
+
+.transparent__navbar {
+  padding: 2rem !important;
+  background: var(--gradient-primary);
+  margin-bottom: 5rem !important;
+  display: block !important;
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.navbar-brand h2 {
+  margin-bottom: 0;
+}
+
+img {
+  width: 2.4rem;
+}
+
+.navbar-nav .nav-item {
+  font-weight: 500;
+  color: var(--color-accent) !important;
+  margin-right: 1.5rem;
+}
+
+.navbar-nav .nav-item .nav-link.active {
+  color: var(--color-background) !important;
+}
+
+.navbar-nav .nav-item:last-child {
+  margin-right: 0;
+}
