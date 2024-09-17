@@ -1,0 +1,12 @@
+:root {
+  --color-background: #f9f7f7;
+  --color-secondary: #000046;
+  --color-primary: #1cb5e0;
+  --color-accent: #dbe2ef;
+  --gradient-primary: linear-gradient(90deg, #000046, #1cb5e0);
+}
+
+body {
+  background: white;
+  padding-top: 10rem !important;
+}
