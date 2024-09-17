@@ -10,7 +10,7 @@ def clinics_list(request):
     context = {
         'clinics': clinics
     }
-    return render(request, 'clinics/clinics_list.html', context)
+    return render(request, 'clinics/clinics.html', context)
 
 
 @login_required
@@ -22,7 +22,7 @@ def clinic_detail(request, pk):
         form = ClinicForm(request.POST, instance=clinic)
         if form.is_valid():
             form.save()
-            return redirect('clinic_detail', pk=clinic.pk)
+            return redirect('clinics/clinic.html', pk=clinic.pk)
     else:
         form = ClinicForm(instance=clinic)
 
@@ -31,7 +31,7 @@ def clinic_detail(request, pk):
         'form': form,
         'doctor_affiliations': doctor_affiliations
     }
-    return render(request, 'clinics/clinic_detail.html', context)
+    return render(request, 'clinics/clinic.html', context)
 
 
 @login_required
@@ -44,7 +44,7 @@ def add_doctor_affiliation(request, pk):
             affiliation = form.save(commit=False)
             affiliation.clinic = clinic
             affiliation.save()
-            return redirect('clinic_detail', pk=clinic.pk)
+            return redirect('clinic', pk=clinic.pk)
     else:
         form = DoctorClinicAffiliationForm()
     
