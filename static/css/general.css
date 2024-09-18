@@ -30,6 +30,7 @@ body {
   font-family: 'Open Sans', sans-serif;
   font-size: 1.6rem;
   min-height: 100vh;
+  background: var(--gradient-primary);
 }
 
 img,
