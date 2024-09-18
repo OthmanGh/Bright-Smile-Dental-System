@@ -4,7 +4,14 @@ from .models import Doctor, DoctorClinicAffiliation
 class DoctorForm(forms.ModelForm):
     class Meta:
         model = Doctor
-        fields = ['npi', 'name', 'email', 'phone_number', 'specialties']
+        fields = ['name', 'email', 'phone_number', 'specialties']  
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'phone_number': forms.TextInput(attrs={'class': 'form-control'}),
+            'specialties': forms.CheckboxSelectMultiple,  
+        }
+
 
 
 class DoctorClinicAffiliationForm(forms.ModelForm):
@@ -23,3 +30,4 @@ class DoctorClinicAffiliationForm(forms.ModelForm):
             ]),
             'working_hours': forms.TextInput(attrs={'placeholder': '{"start": "09:00", "end": "17:00"}'}),
         }
+
