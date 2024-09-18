@@ -1,3 +1,11 @@
 from django.shortcuts import render
+from .models import Patient
 
-# Create your views here.
+def patients_list(request):
+    patients = Patient.objects.all()
+
+    context = {
+        'patients': patients
+    }
+
+    return render(request, 'patients/patients.html',  context)
