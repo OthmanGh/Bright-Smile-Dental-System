@@ -1,41 +1,65 @@
-{% extends 'layout_2.html' %} {% block content %}
+{% extends 'layout_2.html' %}
+<!---->
+
+{% block content %}
 
 <div class="container my-5">
-  <h2 class="text-center mb-4">Doctor Details</h2>
-
   <div class="row">
     <div class="col-md-8">
-      <div class="card mb-4">
+      <div class="card mb-8">
         <div class="card-body">
           <h3 class="card-title">{{ doctor.name }}</h3>
 
-          <form method="post" class="mb-3">
-            {% csrf_token %} {{ form.as_p }}
-            <button type="submit" class="btn btn-primary">Save</button>
-          </form>
-
           <div class="mb-3">
-            <p class="card-text">
-              NPI: <span class="fw-bold">{{ doctor.npi }}</span>
-            </p>
-            <p class="card-text">
-              Email: <span class="fw-bold">{{ doctor.email }}</span>
-            </p>
-            <p class="card-text">
-              Phone: <span class="fw-bold">{{ doctor.phone_number }}</span>
-            </p>
-            <p class="card-text">
-              Specialties:
-              <span class="fw-bold">{{ doctor.specialties|join:", " }}</span>
-            </p>
-            <p class="card-text">
-              Affiliated Clinics:
-              <span class="fw-bold">{{ doctor.num_clinics }}</span>
-            </p>
-            <p class="card-text">
-              Affiliated Patients:
-              <span class="fw-bold">{{ doctor.num_patients }}</span>
-            </p>
+            <div class="mb-3">
+              <p class="card-text">
+                NPI: <span class="fw-bold">{{ doctor.npi }}</span>
+              </p>
+
+              <p class="card-text">
+                Email: <span class="fw-bold">{{ doctor.email }}</span>
+              </p>
+
+              <p class="card-text">
+                Affiliated Clinics:
+                <span class="fw-bold">{{ doctor.num_clinics }}</span>
+              </p>
+
+              <p class="card-text">
+                Affiliated Patients:
+                <span class="fw-bold">{{ doctor.num_patients }}</span>
+              </p>
+
+              <p class="card-text">
+                Specialties:
+                <span class="fw-bold">{{ doctor.specialties|join:", " }}</span>
+              </p>
+            </div>
+
+            <form
+              method="post"
+              class="mb-3 form__inputs"
+              onsubmit="return confirmSave()"
+            >
+              {% csrf_token %}
+
+              <div class="mb-3">{{ form.name.label_tag }} {{ form.name }}</div>
+
+              <div class="mb-3">
+                {{ form.email.label_tag }} {{ form.email }}
+              </div>
+
+              <div class="mb-3">
+                {{ form.phone_number.label_tag }} {{ form.phone_number }}
+              </div>
+
+              <div class="mb-3">
+                {{ form.specialties.label_tag }}
+                <div class="specialties-container">{{ form.specialties }}</div>
+              </div>
+
+              <button type="submit" class="btn__view btn__expand">Save</button>
+            </form>
           </div>
         </div>
       </div>
@@ -45,6 +69,7 @@
       <div class="card mb-4">
         <div class="card-body">
           <h4 class="card-title">Affiliations</h4>
+
           {% if affiliations %}
           <ul class="list-unstyled">
             {% for affiliation in affiliations %}
@@ -53,6 +78,7 @@
             </li>
             {% endfor %}
           </ul>
+
           {% else %}
           <p>No Affiliations Found</p>
           {% endif %}
@@ -62,12 +88,14 @@
       <div class="card">
         <div class="card-body">
           <h4 class="card-title">Affiliated Patients</h4>
+
           {% if patients %}
           <ul class="list-unstyled">
             {% for patient in patients %}
             <li>{{ patient.name }}</li>
             {% endfor %}
           </ul>
+
           {% else %}
           <p>No Patients Found</p>
           {% endif %}
