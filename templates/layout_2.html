@@ -13,11 +13,14 @@
     <link rel="stylesheet" href="{% static 'css/navbar.css' %}" />
     <link rel="stylesheet" href="{% static 'css/app.css' %}" />
     <link rel="stylesheet" href="{% static 'css/common-styles.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/doctor.css'%}" />
   </head>
   <body>
     {% include 'partials/app/_navbar.html' %}
 
     <div class="container mt-5">{% block content %} {% endblock %}</div>
     {% bootstrap_javascript %}
+
+    <script src="{% static 'js/helpers.js' %}"></script>
   </body>
 </html>
