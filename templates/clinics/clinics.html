@@ -1,7 +1,7 @@
 {% extends 'layout_2.html' %} {% block content %}
 
 <div class="container my-5">
-  <h2 class="clinics__header">Clinics Directory</h2>
+  <h2 class="common__header">Clinics Directory</h2>
 
   <div class="row">
     {% if clinics %}
@@ -9,7 +9,7 @@
     {% for clinic in clinics %}
 
     <div class="col-md-4">
-      <div class="clinic__card">
+      <div class="common__card">
         <h3>{{ clinic.name }}</h3>
 
         <div class="card__content">
