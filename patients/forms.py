@@ -6,10 +6,15 @@ class PatientForm(forms.ModelForm):
         model = Patient
         fields = ['name', 'date_of_birth', 'address', 'phone_number', 'last_4_ssn', 'gender']
 
+
 class VisitForm(forms.ModelForm):
     class Meta:
         model = Visit
         fields = ['doctor', 'clinic', 'visit_date', 'procedures_done', 'doctor_notes']
+        widgets = {
+            'visit_date': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+        }
+
 
 class AppointmentForm(forms.ModelForm):
     class Meta:
