@@ -1,6 +1,7 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Patient, Visit, Appointment
 from datetime import datetime
+from .forms import PatientForm
 
 def patients_list(request):
     patients = Patient.objects.all()
@@ -34,3 +35,23 @@ def patients_list(request):
     return render(request, 'patients/patients_list.html', context)
 
 
+def patient_details(request, pk):
+    patient = get_object_or_404(Patient, pk=pk)
+    form = PatientForm(instance=patient)
+
+    
+    upcoming_appointments = patient.appointments.filter(appointment_date__gte=datetime.now())
+
+    if request.method == 'POST':
+        form = PatientForm(request.POST, instance=patient)
+        if form.is_valid():
+            form.save()
+            return redirect('patient', pk=patient.pk)
+
+    context = {
+        'patient': patient,
+        'form': form,
+        'upcoming_appointments': upcoming_appointments,
+    }
+
+    return render(request, 'patients/patient_detail.html', context)
