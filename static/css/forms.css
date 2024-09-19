@@ -1,0 +1,92 @@
+.form__inputs input,
+.form__inputs select,
+.form__inputs textarea {
+  border: 2px solid #ddd;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  width: 100%;
+  font-size: 1.4rem;
+  color: var(--color-secondary);
+  font-weight: 600;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form__inputs textarea {
+  resize: vertical;
+  min-height: 5rem;
+}
+
+.form__inputs textarea:focus,
+.form__inputs input:focus,
+.form__inputs select:focus {
+  border-color: var(--color-primary);
+  outline: none;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form__inputs label {
+  font-size: 1.4rem;
+  margin-bottom: 0.6rem;
+  font-weight: 600;
+  color: var(--color-gray);
+}
+
+.card-title {
+  color: var(--color-gray);
+  font-size: 2rem;
+}
+
+.card-body {
+  padding: 3rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.card-body h3 {
+  color: var(--color-secondary);
+  font-weight: bold;
+  font-size: 2.2rem;
+}
+
+.btn__expand {
+  width: 100%;
+  margin-top: 2.5rem;
+  font-weight: bold;
+}
+
+.specialties-container label {
+  display: inline-flex;
+  align-items: center;
+  text-wrap: nowrap;
+}
+
+.specialties-container input[type='checkbox'] {
+  margin-right: 0.8rem;
+}
+
+.card-text {
+  color: var(--color-gray);
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.card-text:last-child {
+  margin-bottom: 2rem;
+}
+
+.card-text span {
+  color: var(--color-secondary);
+  font-weight: 400;
+}
+
+.list-unstyled li {
+  color: var(--color-secondary);
+  font-weight: 600;
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+}
+
+.col-md-8 {
+  margin-bottom: 2rem;
+}
