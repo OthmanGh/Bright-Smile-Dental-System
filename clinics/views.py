@@ -26,7 +26,7 @@ def clinic_detail(request, pk):
             form = ClinicForm(request.POST, instance=clinic)
             if form.is_valid():
                 form.save()
-                return redirect('clinic_detail', pk=clinic.pk)
+                return redirect('clinic', pk=clinic.pk)
 
         elif 'affiliation_form' in request.POST:
             affiliation_id = request.POST.get('affiliation_id')
@@ -40,7 +40,7 @@ def clinic_detail(request, pk):
 
             if form.is_valid():
                 form.save()
-                return redirect('clinic_detail', pk=clinic.pk)
+                return redirect('clinic', pk=clinic.pk)
             
             else:
                 print(form.errors) 
