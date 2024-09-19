@@ -1,0 +1,157 @@
+{% extends 'layout_2.html' %}
+<!---->
+
+{% block content %}
+<div class="container my-5">
+  <h2 class="common__header">Patients Directory</h2>
+
+  <div class="row">
+    {% if patients %}
+    <!---->
+    {% for patient in patients %}
+    <div class="col-md-4">
+      <div class="common__card">
+        <h3>{{ patient.name }}</h3>
+
+        <div class="card__content">
+          <div class="card__text__layout">
+            <p class="card__text">
+              Date of Birth: <span>{{ patient.date_of_birth }}</span>
+            </p>
+          </div>
+
+          <div class="card__text__layout">
+            <p class="card__text">
+              Last Visit Date:
+              <span>
+                <!---->
+                {% if patient.last_visit_date %}
+                <!---->
+                {{ patient.last_visit_date }}
+                <!---->
+                {% else %}
+                <!---->
+                No Visit
+                <!---->
+                {% endif %}
+              </span>
+            </p>
+          </div>
+
+          <div class="card__text__layout">
+            <p class="card__text">
+              Last Visit Doctor:
+              <span>
+                <!---->
+                {% if patient.last_visit_doctor %}
+                <!---->
+                {{ patient.last_visit_doctor }}
+                <!---->
+                {% else %}
+                <!---->
+                No Visit
+                <!---->
+                {% endif %}
+                <!---->
+              </span>
+            </p>
+          </div>
+
+          <div class="card__text__layout">
+            <p class="card__text">
+              Last Visit Procedure:
+              <span
+                >{% if patient.last_visit_procedure %}
+                <!---->
+
+                {{ patient.last_visit_procedure }}
+                <!---->
+
+                {% else %}
+                <!---->
+
+                No Visit
+                <!---->
+                {% endif %}</span
+              >
+            </p>
+          </div>
+
+          <div class="card__text__layout">
+            <p class="card__text">
+              Next Appointment Date:
+              <span
+                >{% if patient.next_appointment_date %}
+                <!---->
+                {{ patient.next_appointment_date }}
+                <!---->
+                {% else %}
+                <!---->
+                No Appointment
+                <!---->
+                {% endif %}</span
+              >
+            </p>
+          </div>
+
+          <div class="card__text__layout">
+            <p class="card__text">
+              Next Appointment Doctor:
+              <span
+                >{% if patient.next_appointment_doctor %}
+                <!---->
+
+                {{ patient.next_appointment_doctor }}
+                <!---->
+
+                {% else %}
+                <!---->
+
+                No Appointment
+                <!---->
+
+                {% endif %}</span
+              >
+            </p>
+          </div>
+
+          <div class="card__text__layout">
+            <p class="card__text">
+              Next Appointment Procedure:
+              <span>
+                <!---->
+                {% if patient.next_appointment_procedure %}
+                <!---->
+
+                {{ patient.next_appointment_procedure }}
+                <!---->
+
+                {% else %}
+                <!---->
+
+                No Appointment
+                <!---->
+
+                {% endif %}
+                <!---->
+              </span>
+            </p>
+          </div>
+
+          <a href="{% url 'patient' patient.pk %}" class="btn__view"
+            >View Details</a
+          >
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+
+    <!---->
+    {% else %}
+    <div class="col-12 text-center py-4">
+      <p>No Patients Found</p>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
