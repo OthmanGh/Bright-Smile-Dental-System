@@ -7,7 +7,7 @@ from patients.models import Patient
 @login_required
 def doctors_list(request):
     doctors = Doctor.objects.all()
-    return render(request, 'doctors/doctors.html', {'doctors': doctors})
+    return render(request, 'doctors/doctors_list.html', {'doctors': doctors})
 
 
 @login_required
@@ -32,4 +32,4 @@ def doctor_detail(request, pk):
         'patients': patients,
     }
     
-    return render(request, 'doctors/doctor.html', context)
+    return render(request, 'doctors/doctor_detail.html', context)
