@@ -4,7 +4,6 @@ from datetime import datetime
 from .forms import PatientForm, VisitForm
 from django.utils import timezone
 
-
 def patients_list(request):
     patients = Patient.objects.all()
 
@@ -37,13 +36,15 @@ def patients_list(request):
     return render(request, 'patients/patients_list.html', context)
 
 
-
 def patient_details(request, pk):
     patient = get_object_or_404(Patient, pk=pk)
 
     form = PatientForm(instance=patient)
     
-    upcoming_appointments = patient.appointments.filter(appointment_date__gte=timezone.now())
+    upcoming_appointments = patient.appointments.filter(appointment_date__gte=timezone.now()).order_by('appointment_date')
+
+    next_appointment = upcoming_appointments.first() if upcoming_appointments.exists() else None
+    
     visits = Visit.objects.filter(patient=patient).select_related('doctor', 'clinic')
 
     if request.method == 'POST':
@@ -68,6 +69,7 @@ def patient_details(request, pk):
         'visit_form': visit_form,  
         'upcoming_appointments': upcoming_appointments,
         'visits': visits,
+        'next_appointment': next_appointment
     }
 
     return render(request, 'patients/patient_detail.html', context)
