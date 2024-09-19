@@ -36,30 +36,30 @@
             class="mb-3 form__inputs"
             onsubmit="return confirmSave()"
           >
-            {% csrf_token %}
+            {% csrf_token %} {{ form.as_p }}
+            <button
+              type="submit"
+              name="save_patient"
+              class="btn__view btn__expand"
+            >
+              Save Patient
+            </button>
+          </form>
+        </div>
+      </div>
 
-            <div class="mb-3">{{ form.name.label_tag }} {{ form.name }}</div>
-            <div class="mb-3">
-              {{ form.date_of_birth.label_tag }} {{ form.date_of_birth }}
-            </div>
-
-            <div class="mb-3">
-              {{ form.address.label_tag }} {{ form.address }}
-            </div>
-
-            <div class="mb-3">
-              {{ form.phone_number.label_tag }} {{ form.phone_number }}
-            </div>
-
-            <div class="mb-3">
-              {{ form.last_4_ssn.label_tag }} {{ form.last_4_ssn }}
-            </div>
-
-            <div class="mb-3">
-              {{ form.gender.label_tag }} {{ form.gender }}
-            </div>
-
-            <button type="submit" class="btn__view btn__expand">Save</button>
+      <div class="card mb-8">
+        <div class="card-body">
+          <h4 class="card-title">Add New Visit</h4>
+          <form method="post" class="form__inputs">
+            {% csrf_token %} {{ visit_form.as_p }}
+            <button
+              type="submit"
+              name="add_visit"
+              class="btn__view btn__expand"
+            >
+              Add Visit
+            </button>
           </form>
         </div>
       </div>
@@ -73,8 +73,15 @@
           <ul class="list-unstyled">
             {% for visit in patient.visits.all %}
             <li>
-              {{ visit.visit_date }} - {{ visit.procedures_done }} by Dr. {{
-              visit.doctor.name }}
+              {{ visit.visit_date }}
+              <!-- -->
+              -
+              <!-- -->
+              {{ visit.procedures_done }}
+              <!-- -->
+              by Dr.
+              <!-- -->
+              {{ visit.doctor.name }}
             </li>
             {% endfor %}
           </ul>
@@ -84,29 +91,61 @@
         </div>
       </div>
 
-      <div class="card">
+      <div class="card mb-4">
         <div class="card-body">
           <h4 class="card-title">Upcoming Appointments</h4>
           {% if upcoming_appointments %}
           <ul class="list-unstyled">
             {% for appointment in upcoming_appointments %}
             <li>
-              Appointment on {{ appointment.appointment_date }}
-              <!---->
+              Appointment on
+              <!-- -->
+              {{ appointment.appointment_date }}
+              <!-- -->
               for
-              <!---->
-
+              <!-- -->
               {{ appointment.procedure }}
-              <!---->
-
+              <!-- -->
               with Dr.
-              <!---->
+              <!-- -->
               {{ appointment.doctor.name }}
             </li>
             {% endfor %}
           </ul>
           {% else %}
           <p>No Upcoming Appointments Found</p>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="card mb-4">
+        <div class="card-body">
+          <h4 class="card-title">Patient Visits</h4>
+          {% if visits %}
+          <ul class="list-unstyled mb-4">
+            {% for visit in visits %}
+            <li>
+              {{ visit.visit_date }}
+              <!-- -->
+              -
+              <!-- -->
+              {{ visit.procedures_done }}
+              <!-- -->
+              by Dr.
+              <!-- -->
+              {{ visit.doctor.name }}
+              <!-- -->
+              at
+              <!-- -->
+              {{ visit.clinic.name }}
+              <!-- -->
+              <br />
+              Doctor's Notes: {{ visit.doctor_notes }}
+            </li>
+            {% endfor %}
+          </ul>
+          {% else %}
+          <p>No Visits Found</p>
           {% endif %}
         </div>
       </div>
