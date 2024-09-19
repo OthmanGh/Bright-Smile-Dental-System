@@ -4,8 +4,9 @@ from .models import Doctor, DoctorClinicAffiliation
 class DoctorForm(forms.ModelForm):
     class Meta:
         model = Doctor
-        fields = ['name', 'email', 'phone_number', 'specialties']  
+        fields = ['npi','name', 'email', 'phone_number', 'specialties']  
         widgets = {
+            'npi': forms.NumberInput(attrs={'class': 'form-control'}),
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
             'phone_number': forms.TextInput(attrs={'class': 'form-control'}),
