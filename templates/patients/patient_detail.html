@@ -1,0 +1,117 @@
+{% extends 'layout_2.html' %}
+<!---->
+
+{% block content %}
+
+<div class="container my-5">
+  <div class="row">
+    <div class="col-md-8">
+      <div class="card mb-8">
+        <div class="card-body">
+          <h3 class="card-title">{{ patient.name }}</h3>
+
+          <div class="mb-3">
+            <p class="card-text">
+              Date of Birth:
+              <span class="fw-bold">{{ patient.date_of_birth }}</span>
+            </p>
+            <p class="card-text">
+              Address: <span class="fw-bold">{{ patient.address }}</span>
+            </p>
+            <p class="card-text">
+              Phone Number:
+              <span class="fw-bold">{{ patient.phone_number }}</span>
+            </p>
+            <p class="card-text">
+              Last 4 Digits of SSN:
+              <span class="fw-bold">{{ patient.last_4_ssn }}</span>
+            </p>
+            <p class="card-text">
+              Gender: <span class="fw-bold">{{ patient.gender }}</span>
+            </p>
+          </div>
+
+          <form
+            method="post"
+            class="mb-3 form__inputs"
+            onsubmit="return confirmSave()"
+          >
+            {% csrf_token %}
+
+            <div class="mb-3">{{ form.name.label_tag }} {{ form.name }}</div>
+            <div class="mb-3">
+              {{ form.date_of_birth.label_tag }} {{ form.date_of_birth }}
+            </div>
+
+            <div class="mb-3">
+              {{ form.address.label_tag }} {{ form.address }}
+            </div>
+
+            <div class="mb-3">
+              {{ form.phone_number.label_tag }} {{ form.phone_number }}
+            </div>
+
+            <div class="mb-3">
+              {{ form.last_4_ssn.label_tag }} {{ form.last_4_ssn }}
+            </div>
+
+            <div class="mb-3">
+              {{ form.gender.label_tag }} {{ form.gender }}
+            </div>
+
+            <button type="submit" class="btn__view btn__expand">Save</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card mb-4">
+        <div class="card-body">
+          <h4 class="card-title">Recent Visits</h4>
+          {% if patient.visits.all %}
+          <ul class="list-unstyled">
+            {% for visit in patient.visits.all %}
+            <li>
+              {{ visit.visit_date }} - {{ visit.procedures_done }} by Dr. {{
+              visit.doctor.name }}
+            </li>
+            {% endfor %}
+          </ul>
+          {% else %}
+          <p>No Recent Visits Found</p>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Upcoming Appointments</h4>
+          {% if upcoming_appointments %}
+          <ul class="list-unstyled">
+            {% for appointment in upcoming_appointments %}
+            <li>
+              Appointment on {{ appointment.appointment_date }}
+              <!---->
+              for
+              <!---->
+
+              {{ appointment.procedure }}
+              <!---->
+
+              with Dr.
+              <!---->
+              {{ appointment.doctor.name }}
+            </li>
+            {% endfor %}
+          </ul>
+          {% else %}
+          <p>No Upcoming Appointments Found</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
