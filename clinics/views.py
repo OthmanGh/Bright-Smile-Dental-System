@@ -11,7 +11,7 @@ def clinics_list(request):
     context = {
         'clinics': clinics
     }
-    return render(request, 'clinics/clinics.html', context)
+    return render(request, 'clinics/clinics_list.html', context)
 
 
 @login_required
