@@ -36,11 +36,11 @@ def patients_list(request):
 
 
 def patient_details(request, pk):
+    
     patient = get_object_or_404(Patient, pk=pk)
     form = PatientForm(instance=patient)
-
-    
     upcoming_appointments = patient.appointments.filter(appointment_date__gte=datetime.now())
+    visits = Visit.objects.filter(patient=patient).select_related('doctor', 'clinic')
 
     if request.method == 'POST':
         form = PatientForm(request.POST, instance=patient)
@@ -52,6 +52,7 @@ def patient_details(request, pk):
         'patient': patient,
         'form': form,
         'upcoming_appointments': upcoming_appointments,
+        'visits': visits
     }
 
     return render(request, 'patients/patient_detail.html', context)
