@@ -1,5 +1,6 @@
 from django import forms
 from .models import Doctor, DoctorClinicAffiliation
+from clinics.models import Clinic
 
 class DoctorForm(forms.ModelForm):
     class Meta:
@@ -14,8 +15,16 @@ class DoctorForm(forms.ModelForm):
         }
         
 
-
 class DoctorClinicAffiliationForm(forms.ModelForm):
     class Meta:
         model = DoctorClinicAffiliation
-        fields = ['doctor', 'office_address', 'working_days', 'working_hours']
+        fields = ['doctor', 'clinic', 'office_address', 'working_days', 'start_time', 'end_time']
+        widgets = {
+            'office_address': forms.Textarea(attrs={'rows': 3}),
+            'working_days': forms.CheckboxSelectMultiple(),
+            'start_time': forms.TimeInput(format='%H:%M', attrs={'type': 'time'}),
+            'end_time': forms.TimeInput(format='%H:%M', attrs={'type': 'time'}),
+        }
+    
+    doctor = forms.ModelChoiceField(queryset=Doctor.objects.all(), empty_label="Select Doctor")
+    clinic = forms.ModelChoiceField(queryset=Clinic.objects.all(), empty_label="Select Clinic")
