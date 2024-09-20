@@ -4,6 +4,10 @@ from .models import Clinic
 from .forms import ClinicForm
 from doctors.models import DoctorClinicAffiliation, Doctor
 from doctors.forms import DoctorClinicAffiliationForm
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+from .serializers import ClinicSerializer
 
 @login_required
 def clinics_list(request):
@@ -74,3 +78,14 @@ def clinic_detail(request, pk):
     return render(request, 'clinics/clinic_detail.html', context)
 
 
+# REST API 
+@api_view(['GET'])
+def get_clinic_info(request, pk):
+    try:
+        clinic = Clinic.objects.get(pk=pk)
+        
+    except Clinic.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    serializer = ClinicSerializer(clinic)
+    return Response(serializer.data)
