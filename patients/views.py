@@ -3,6 +3,10 @@ from .models import Patient, Visit, Appointment
 from datetime import datetime
 from .forms import PatientForm, VisitForm, AppointmentForm
 from django.utils import timezone
+from rest_framework.decorators import api_view
+from .serializers import PatientSerializer
+from rest_framework.response import Response
+from rest_framework import status
 
 def patients_list(request):
     patients = Patient.objects.all()
@@ -92,4 +96,13 @@ def patient_details(request, pk):
 
 
 
+@api_view(['POST'])
+def add_patient(request):
+    if request.method == 'POST':
+        serializer = PatientSerializer(data=request.data)
 
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
