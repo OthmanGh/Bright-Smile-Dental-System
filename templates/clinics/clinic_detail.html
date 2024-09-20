@@ -1,7 +1,6 @@
 {% extends 'layout_2.html' %}
 <!---->
 {% block content %}
-
 <div class="container my-5">
   <div class="row">
     <div class="col-md-8">
@@ -10,269 +9,134 @@
         <div class="card-body">
           <h3 class="card-title">{{ clinic.name }}</h3>
 
-          <div class="mb-3">
+          <div>
             <p class="card-text">
               Address: <span class="fw-bold">{{ clinic.address }}</span>
             </p>
             <p class="card-text">
-              City: <span class="fw-bold">{{ clinic.city }}</span>
-            </p>
-            <p class="card-text">
-              State: <span class="fw-bold">{{ clinic.state }}</span>
-            </p>
-            <p class="card-text">
-              Phone Number:
-              <span class="fw-bold">{{ clinic.phone_number }}</span>
+              Phone: <span class="fw-bold">{{ clinic.phone_number }}</span>
             </p>
             <p class="card-text">
               Email: <span class="fw-bold">{{ clinic.email }}</span>
             </p>
-            <p class="card-text">
-              Number of Affiliated Doctors:
-              <span class="fw-bold">{{ clinic.num_doctors }}</span>
-            </p>
-            <p class="card-text">
-              Number of Patients:
-              <span class="fw-bold">{{ clinic.num_patients }}</span>
-            </p>
           </div>
 
-          <!-- ?Button to Open Edit Clinic Modal -->
-          <button
-            class="btn__view btn__expand"
-            data-bs-toggle="modal"
-            data-bs-target="#editClinicModal"
+          <form
+            method="post"
+            class="mb-3 form__inputs"
+            onsubmit="return confirmSave()"
           >
-            Edit Clinic
-          </button>
+            {% csrf_token %} {{ form.as_p }}
+            <button
+              type="submit"
+              name="clinic_form"
+              class="btn__view btn__expand"
+            >
+              Save
+            </button>
+          </form>
         </div>
       </div>
 
-      <!-- ?Modal for Editing Clinic -->
-      <div
-        class="modal fade"
-        id="editClinicModal"
-        tabindex="-1"
-        aria-labelledby="editClinicModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title" id="editClinicModalLabel">Edit Clinic</h4>
-
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-
-            <div class="modal-body">
-              <form
-                method="post"
-                action="{% url 'clinic' pk=clinic.pk %}"
-                class="form__inputs"
-              >
-                {% csrf_token %}
-                <input type="hidden" name="clinic_form" value="1" />
-                {{ form.as_p }}
-                <button type="submit" class="btn__view btn__expand">
-                  Save Changes
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ?Edit Doctor Affiliation Section -->
+      <!-- ?Add Doctor Affiliation -->
       <div class="card mb-4">
         <div class="card-body">
-          <h4 class="card-title">Doctor Affiliations</h4>
-
-          <ul class="list-unstyled">
-            {% for affiliation in affiliations_with_hours %}
-            <li>
-              <strong>{{ affiliation.doctor.name }}</strong><br />
-              Office Address: {{ affiliation.office_address }}<br />
-              Working Schedule: {{ affiliation.working_hours }}<br />
-
-              <button
-                type="button"
-                class="btn__view btn__expand"
-                data-bs-toggle="modal"
-                data-bs-target="#editAffiliationModal"
-                onclick="openEditModal('{{ affiliation.id }}', '{{ affiliation.doctor.name }}', '{{ affiliation.office_address }}', '{{ affiliation.working_hours }}')"
-              >
-                Edit
-              </button>
-            </li>
-            {% endfor %}
-          </ul>
-        </div>
-      </div>
-
-      <!-- ?Modal for Editing Doctor Affiliation -->
-      <div
-        class="modal fade"
-        id="editAffiliationModal"
-        tabindex="-1"
-        aria-labelledby="editAffiliationModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title" id="editAffiliationModalLabel">
-                Edit Doctor Affiliation
-              </h4>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
+          <h4 class="card-title">Add Doctor Affiliation</h4>
+          <form
+            method="post"
+            class="mb-3 form__inputs"
+            onsubmit="return confirmSave()"
+          >
+            {% csrf_token %}
+            <div class="mb-3">
+              {{ affiliation_form.doctor.label_tag }}
+              <!---->
+              {{ affiliation_form.doctor }}
             </div>
-            <div class="modal-body">
-              <form
-                method="post"
-                action="{% url 'clinic' pk=clinic.pk %}"
-                class="form__inputs"
-              >
-                {% csrf_token %}
-                <input type="hidden" name="affiliation_form" value="1" />
-                <input
-                  type="hidden"
-                  id="affiliation_id"
-                  name="affiliation_id"
-                  value=""
-                />
-
-                <div class="mb-3">
-                  <label for="doctor" class="form-label">Doctor</label>
-                  <select
-                    id="doctor"
-                    name="doctor"
-                    class="form-control"
-                    required
-                  >
-                    <option value="">Select Doctor</option>
-                    {% for doctor in doctors %}
-                    <option value="{{ doctor.id }}">{{ doctor.name }}</option>
-                    {% endfor %}
-                  </select>
-                </div>
-
-                <div class="mb-3">
-                  <label for="office_address" class="form-label"
-                    >Office Address</label
-                  >
-                  <input
-                    type="text"
-                    id="office_address"
-                    name="office_address"
-                    class="form-control"
-                    required
-                  />
-                </div>
-
-                <div class="mb-3">
-                  <label for="working_days" class="form-label"
-                    >Working Days</label
-                  >
-                  <input
-                    type="text"
-                    id="working_days"
-                    name="working_days"
-                    class="form-control"
-                    required
-                    placeholder="e.g., Monday, Tuesday, Wednesday"
-                  />
-                </div>
-
-                <div class="mb-3">
-                  <label for="working_hours" class="form-label"
-                    >Working Hours</label
-                  >
-                  <textarea
-                    id="working_hours"
-                    name="working_hours"
-                    class="form-control"
-                    required
-                    placeholder='e.g., {"Monday": "09:00-17:00", "Tuesday": "09:00-17:00"}'
-                  ></textarea>
-                </div>
-
-                <button type="submit" class="btn__view btn__expand">
-                  Save Changes
-                </button>
-              </form>
+            <div class="mb-3">
+              {{ affiliation_form.clinic.label_tag }}
+              <!---->
+              {{ affiliation_form.clinic }}
             </div>
-          </div>
+            <div class="mb-3">
+              {{ affiliation_form.office_address.label_tag }}
+              <!---->
+              {{ affiliation_form.office_address }}
+            </div>
+            <div class="mb-3">
+              {{ affiliation_form.working_days.label_tag }}
+              <div class="specialties-container">
+                {{ affiliation_form.working_days }}
+              </div>
+            </div>
+
+            <div class="mb-3">
+              {{ affiliation_form.start_time.label_tag }}
+              <!---->
+              {{ affiliation_form.start_time }}
+            </div>
+
+            <div class="mb-3">
+              {{ affiliation_form.end_time.label_tag }}
+              <!---->
+              {{ affiliation_form.end_time }}
+            </div>
+
+            <button
+              type="submit"
+              name="affiliation_form"
+              class="btn__view btn__expand"
+            >
+              Add Affiliation
+            </button>
+          </form>
         </div>
       </div>
     </div>
 
+    <!-- ?Sidebar Content -->
     <div class="col-md-4">
-      <!-- ?Add Doctor Affiliation Section -->
+      <!-- ?Affiliated Patients -->
       <div class="card mb-4">
         <div class="card-body">
-          <h4 class="card-title">Add Doctor Affiliation</h4>
-
-          <button
-            class="btn__view btn__expand"
-            data-bs-toggle="modal"
-            data-bs-target="#addAffiliationModal"
-          >
-            Add Doctor
-          </button>
+          <h4 class="card-title">Affiliated Patients</h4>
+          {% if patients %}
+          <ul class="list-unstyled">
+            {% for patient in patients %}
+            <li>{{ patient.name }}</li>
+            {% endfor %}
+          </ul>
+          {% else %}
+          <p>No Patients Found</p>
+          {% endif %}
         </div>
       </div>
 
-      <!-- ?Modal for Adding Doctor Affiliation -->
-      <div
-        class="modal fade"
-        id="addAffiliationModal"
-        tabindex="-1"
-        aria-labelledby="addAffiliationModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title" id="addAffiliationModalLabel">
-                Add Doctor Affiliation
-              </h4>
-
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-
-            <div class="modal-body">
-              <form
-                method="post"
-                action="{% url 'clinic' pk=clinic.pk %}"
-                class="form__inputs"
-              >
-                {% csrf_token %}
-                <input type="hidden" name="affiliation_form" value="1" />
-                {{ affiliation_form.as_p }}
-                <button type="submit" class="btn__view btn__expand">
-                  Add Affiliation
-                </button>
-              </form>
-            </div>
-          </div>
+      <!-- ?Affiliated Doctor -->
+      <div class="card mb-4">
+        <div class="card-body">
+          <h4 class="card-title">Affiliated Doctors</h4>
+          {% if affiliations %}
+          <ul class="list-unstyled">
+            {% for affiliation in affiliations %}
+            <li>
+              <strong>{{ affiliation.doctor.name }}</strong><br />
+              Office Address: {{ affiliation.office_address }}<br />
+              Working Days:
+              <!---->
+              {{ affiliation.working_days|join:", " }}<br />
+              <!---->
+              Start Time: {{ affiliation.start_time|time:"H:i" }}<br />
+              End Time: {{ affiliation.end_time|time:"H:i" }}<br />
+            </li>
+            {% endfor %}
+          </ul>
+          {% else %}
+          <p>No affiliated doctors found.</p>
+          {% endif %}
         </div>
       </div>
     </div>
   </div>
 </div>
-
 {% endblock %}
