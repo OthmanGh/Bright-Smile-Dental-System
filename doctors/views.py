@@ -3,6 +3,10 @@ from django.contrib.auth.decorators import login_required
 from .models import Doctor, DoctorClinicAffiliation
 from .forms import DoctorForm
 from patients.models import Patient
+from .serializers import DoctorSerializer
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
 
 @login_required
 def doctors_list(request):
@@ -33,3 +37,15 @@ def doctor_detail(request, pk):
     }
     
     return render(request, 'doctors/doctor_detail.html', context)
+
+
+@api_view(['POST'])
+def add_doctor(request):
+    if request.method == 'POST':
+        serializer = DoctorSerializer(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
