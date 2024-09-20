@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Patient, Visit, Appointment
 from datetime import datetime
-from .forms import PatientForm, VisitForm
+from .forms import PatientForm, VisitForm, AppointmentForm
 from django.utils import timezone
 
 def patients_list(request):
@@ -47,19 +47,34 @@ def patient_details(request, pk):
     
     visits = Visit.objects.filter(patient=patient).select_related('doctor', 'clinic')
 
+    appointment_form = AppointmentForm()
+
     if request.method == 'POST':
         if 'save_patient' in request.POST:
             form = PatientForm(request.POST, instance=patient)
+
             if form.is_valid():
                 form.save()
                 return redirect('patient', pk=patient.pk)
+            
         elif 'add_visit' in request.POST:
             visit_form = VisitForm(request.POST)
+
             if visit_form.is_valid():
                 visit = visit_form.save(commit=False)
                 visit.patient = patient 
                 visit.save()
                 return redirect('patient', pk=patient.pk)
+
+        elif 'add_appointment' in request.POST:
+            appointment_form = AppointmentForm(request.POST)
+
+            if appointment_form.is_valid():
+                appointment = appointment_form.save(commit=False)
+                appointment.patient = patient
+                appointment.save()
+                return redirect('patient', pk=patient.pk)
+
     else:
         visit_form = VisitForm() 
 
@@ -68,8 +83,13 @@ def patient_details(request, pk):
         'form': form,
         'visit_form': visit_form,  
         'upcoming_appointments': upcoming_appointments,
+        'appointment_form': appointment_form,  
         'visits': visits,
         'next_appointment': next_appointment
     }
 
     return render(request, 'patients/patient_detail.html', context)
+
+
+
+
