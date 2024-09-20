@@ -1,6 +1,7 @@
 from django import forms    
 from .models import Patient, Appointment, Visit
 
+
 class PatientForm(forms.ModelForm):
     class Meta:
         model = Patient
@@ -20,3 +21,8 @@ class AppointmentForm(forms.ModelForm):
     class Meta:
         model = Appointment
         fields = ['doctor', 'clinic', 'procedure', 'appointment_date']
+        widgets = {
+            'appointment_date': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+        }
+
+
