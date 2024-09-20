@@ -6,7 +6,7 @@
 <div class="container my-5">
   <div class="row">
     <div class="col-md-8">
-      <div class="card mb-8">
+      <div class="card mb-5">
         <div class="card-body">
           <h3 class="card-title">{{ patient.name }}</h3>
 
@@ -48,11 +48,13 @@
         </div>
       </div>
 
-      <div class="card mb-8">
+      <div class="card mb-5">
         <div class="card-body">
           <h4 class="card-title">Add New Visit</h4>
           <form method="post" class="form__inputs">
-            {% csrf_token %} {{ visit_form.as_p }}
+            {% csrf_token %}
+            <!---->
+            {{ visit_form.as_p }}
             <button
               type="submit"
               name="add_visit"
@@ -63,10 +65,30 @@
           </form>
         </div>
       </div>
+
+      <div class="card mb-5">
+        <div class="card-body">
+          <h4 class="card-title">Schedule Appointment</h4>
+
+          <form method="post" class="form__inputs">
+            {% csrf_token %}
+            <!---->
+            {{ appointment_form.as_p }}
+
+            <button
+              type="submit"
+              name="add_appointment"
+              class="btn__view btn__expand"
+            >
+              Schedule Appointment
+            </button>
+          </form>
+        </div>
+      </div>
     </div>
 
     <div class="col-md-4">
-      <div class="card mb-4">
+      <div class="card mb-5">
         <div class="card-body">
           <h4 class="card-title">Recent Visits</h4>
           {% if patient.visits.all %}
@@ -91,34 +113,60 @@
         </div>
       </div>
 
-      <div class="card mb-4">
+      <div class="card mb-5">
         <div class="card-body">
-          <h4 class="card-title">Upcoming Appointments</h4>
+          <h4 class="card-title">Appointments</h4>
+
+          {% if next_appointment %}
+          <div class="mb-4">
+            <h4 class="text-secondary mb-3">Next Appointment</h4>
+            <p>
+              <strong>Date & Time:</strong>
+              <!---->
+              {{ next_appointment.appointment_date }}
+            </p>
+            <p><strong>Clinic:</strong> {{ next_appointment.clinic.name }}</p>
+            <p>
+              <strong>Doctor:</strong> Dr.
+              <!---->
+              {{ next_appointment.doctor.name }}
+            </p>
+            <p><strong>Procedure:</strong> {{ next_appointment.procedure }}</p>
+            <p>
+              <strong>Date Booked:</strong> {{ next_appointment.date_booked }}
+            </p>
+          </div>
+          {% else %}
+          <p>No upcoming appointment scheduled.</p>
+          {% endif %}
+          <!---->
+
           {% if upcoming_appointments %}
+          <h4 class="text-secondary">All Upcoming Appointments</h4>
           <ul class="list-unstyled">
             {% for appointment in upcoming_appointments %}
             <li>
               Appointment on
-              <!-- -->
+              <!----->
               {{ appointment.appointment_date }}
-              <!-- -->
-              for
-              <!-- -->
-              {{ appointment.procedure }}
-              <!-- -->
+              <!----->
+
+              for {{ appointment.procedure }}
+              <!----->
+
               with Dr.
-              <!-- -->
+              <!----->
               {{ appointment.doctor.name }}
             </li>
             {% endfor %}
           </ul>
           {% else %}
-          <p>No Upcoming Appointments Found</p>
+          <p>No upcoming appointments found.</p>
           {% endif %}
         </div>
       </div>
 
-      <div class="card mb-4">
+      <div class="card mb-5">
         <div class="card-body">
           <h4 class="card-title">Patient Visits</h4>
           {% if visits %}
