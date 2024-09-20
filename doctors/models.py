@@ -1,6 +1,6 @@
 from django.db import models
-from django.contrib.postgres.fields import ArrayField
 from multiselectfield import MultiSelectField
+from datetime import time
 
 class Doctor(models.Model):
     SPECIALTY_CHOICES = (
@@ -32,11 +32,22 @@ class Doctor(models.Model):
 
 
 class DoctorClinicAffiliation(models.Model):
+    DAY_CHOICES = [
+        ('mon', 'Monday'),
+        ('tue', 'Tuesday'),
+        ('wed', 'Wednesday'),
+        ('thu', 'Thursday'),
+        ('fri', 'Friday'),
+        ('sat', 'Saturday'),
+        ('sun', 'Sunday'),
+    ]
+
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE, related_name='affiliations')
     clinic = models.ForeignKey('clinics.Clinic', on_delete=models.CASCADE, related_name='doctor_affiliations')
     office_address = models.TextField()
-    working_days = ArrayField(models.CharField(max_length=10), size=7)
-    working_hours = models.JSONField() 
+    working_days = MultiSelectField(choices=DAY_CHOICES, blank=True)
+    start_time = models.TimeField(default=time(9, 0))
+    end_time = models.TimeField(default=time(17, 0))
 
     class Meta:
         unique_together = ('doctor', 'clinic')
