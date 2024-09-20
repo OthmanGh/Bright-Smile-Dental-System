@@ -78,7 +78,7 @@ def clinic_detail(request, pk):
     return render(request, 'clinics/clinic_detail.html', context)
 
 
-# REST API 
+
 @api_view(['GET'])
 def get_clinic_info(request, pk):
     try:
@@ -89,3 +89,15 @@ def get_clinic_info(request, pk):
 
     serializer = ClinicSerializer(clinic)
     return Response(serializer.data)
+
+
+@api_view(['POST'])
+def add_clinic(request):
+    if request.method == 'POST':
+        serializer = ClinicSerializer(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
