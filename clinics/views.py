@@ -2,13 +2,15 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Clinic
 from .forms import ClinicForm
-from doctors.models import DoctorClinicAffiliation, Doctor
-from doctors.forms import DoctorClinicAffiliationForm
+from doctors.models import DoctorClinicAffiliation
+from doctors.forms import DoctorClinicAffiliationForm, AffiliationEditForm
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import ClinicSerializer
 from patients.models import Patient
+from django.contrib import messages
+
 
 @login_required
 def clinics_list(request):
@@ -18,6 +20,8 @@ def clinics_list(request):
     }
     return render(request, 'clinics/clinics_list.html', context)
 
+
+
 def clinic_detail(request, pk):
     clinic = get_object_or_404(Clinic, id=pk)
     affiliations = DoctorClinicAffiliation.objects.filter(clinic=clinic)
@@ -26,31 +30,47 @@ def clinic_detail(request, pk):
     if request.method == 'POST':
         if 'clinic_form' in request.POST:
             form = ClinicForm(request.POST, instance=clinic)
+
             if form.is_valid():
                 form.save()
+                messages.success(request, 'Clinic information updated successfully.')
                 return redirect('clinic', pk=pk)
-            
+        
         elif 'affiliation_form' in request.POST:
             affiliation_form = DoctorClinicAffiliationForm(request.POST)
+
             if affiliation_form.is_valid():
                 new_affiliation = affiliation_form.save(commit=False)
                 new_affiliation.clinic = clinic
                 new_affiliation.save()
+                messages.success(request, 'Doctor affiliation added successfully.')
                 return redirect('clinic', pk=pk)
-            
+        
+        elif 'edit_affiliation' in request.POST:
+            affiliation_id = request.POST.get('affiliation_id')
+            affiliation = get_object_or_404(DoctorClinicAffiliation, id=affiliation_id)
+            edit_form = AffiliationEditForm(request.POST, instance=affiliation)
+
+            if edit_form.is_valid():
+                edit_form.save()
+                messages.success(request, 'Doctor affiliation updated successfully.')
+                return redirect('clinic', pk=pk)
     else:
         form = ClinicForm(instance=clinic)
         affiliation_form = DoctorClinicAffiliationForm()
+
+    affiliations_with_forms = [(affiliation, AffiliationEditForm(instance=affiliation)) for affiliation in affiliations]
 
     context = {
         'clinic': clinic,
         'form': form,
         'affiliation_form': affiliation_form,
-        'affiliations': affiliations,
-        'patients': patients
-        }
+        'affiliations_with_forms': affiliations_with_forms,
+        'patients': patients,
+    }
     
     return render(request, 'clinics/clinic_detail.html', context)
+
 
 
 @api_view(['GET'])
