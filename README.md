@@ -143,3 +143,28 @@ The following REST API endpoints are available for external systems:
 - Add Clinic: `POST http://127.0.0.1:8000/api/clinics/`
 
 - Get Clinic Information: `GET http://127.0.0.1:8000/api/clinics/{id}/`
+
+### API Usage Examples
+
+To use these APIs, you can use tools like cURL or Postman. Here are some examples:
+
+1\. Add a new patient:
+
+```
+
+curl -X POST http://127.0.0.1:8000/api/patients/
+
+-H "Content-Type: application/json"
+
+-d '{
+    "name": "Liam Fletcher","date_of_birth": "1995-09-30","address": "123 Zahle St","phone_number": "452-655-7426","last_4_ssn": "5724","gender": "Male"}'
+
+```
+
+2\. Get clinic information:
+
+```
+
+curl http://127.0.0.1:8000/api/clinics/1/
+
+```
