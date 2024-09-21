@@ -1,11 +1,12 @@
 {% extends 'layout_2.html' %}
 <!---->
 {% block content %}
+
 <div class="container my-5">
   <div class="row">
     <div class="col-md-8">
-      <!-- ?Clinic Information -->
-      <div class="card mb-4">
+      <!-- Clinic Information -->
+      <div class="card mb-5">
         <div class="card-body">
           <h3 class="card-title">{{ clinic.name }}</h3>
 
@@ -38,8 +39,8 @@
         </div>
       </div>
 
-      <!-- ?Add Doctor Affiliation -->
-      <div class="card mb-4">
+      <!-- Add Doctor Affiliation -->
+      <div class="card mb-5">
         <div class="card-body">
           <h4 class="card-title">Add Doctor Affiliation</h4>
           <form
@@ -48,21 +49,25 @@
             onsubmit="return confirmSave()"
           >
             {% csrf_token %}
+
             <div class="mb-3">
               {{ affiliation_form.doctor.label_tag }}
               <!---->
               {{ affiliation_form.doctor }}
             </div>
+
             <div class="mb-3">
               {{ affiliation_form.clinic.label_tag }}
               <!---->
               {{ affiliation_form.clinic }}
             </div>
+
             <div class="mb-3">
               {{ affiliation_form.office_address.label_tag }}
               <!---->
               {{ affiliation_form.office_address }}
             </div>
+
             <div class="mb-3">
               {{ affiliation_form.working_days.label_tag }}
               <div class="specialties-container">
@@ -94,10 +99,10 @@
       </div>
     </div>
 
-    <!-- ?Sidebar Content -->
+    <!-- Sidebar Content -->
     <div class="col-md-4">
-      <!-- ?Affiliated Patients -->
-      <div class="card mb-4">
+      <!-- Affiliated Patients -->
+      <div class="card mb-5">
         <div class="card-body">
           <h4 class="card-title">Affiliated Patients</h4>
           {% if patients %}
@@ -112,25 +117,105 @@
         </div>
       </div>
 
-      <!-- ?Affiliated Doctor -->
-      <div class="card mb-4">
+      <!-- Affiliated Doctors -->
+      <div class="card mb-5">
         <div class="card-body">
           <h4 class="card-title">Affiliated Doctors</h4>
-          {% if affiliations %}
+          {% if affiliations_with_forms %}
           <ul class="list-unstyled">
-            {% for affiliation in affiliations %}
-            <li>
+            {% for affiliation, edit_form in affiliations_with_forms %}
+            <li class="mb-4">
               <strong>{{ affiliation.doctor.name }}</strong><br />
               Office Address: {{ affiliation.office_address }}<br />
-              Working Days:
-              <!---->
-              {{ affiliation.working_days|join:", " }}<br />
-              <!---->
+              Working Days: {{ affiliation.working_days|join:", " }}<br />
               Start Time: {{ affiliation.start_time|time:"H:i" }}<br />
               End Time: {{ affiliation.end_time|time:"H:i" }}<br />
+              <button
+                class="btn__view btn__expand mt-2"
+                data-bs-toggle="modal"
+                data-bs-target="#editModal-{{ affiliation.id }}"
+              >
+                Edit
+              </button>
+
+              <!-- Modal -->
+              <div
+                class="modal fade"
+                id="editModal-{{ affiliation.id }}"
+                tabindex="-1"
+                aria-labelledby="editModalLabel-{{ affiliation.id }}"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h4
+                        class="modal-title"
+                        id="editModalLabel-{{ affiliation.id }}"
+                      >
+                        Edit Affiliation
+                      </h4>
+
+                      <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      ></button>
+                    </div>
+
+                    <div class="modal-body">
+                      <form method="post" class="form__inputs">
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+                          {{ edit_form.office_address.label_tag }}
+                          <!---->
+                          {{ edit_form.office_address }}
+                        </div>
+
+                        {{ edit_form.working_days.label_tag }}
+                        <div class="mb-3">
+                          <div class="specialties-container">
+                            {{ edit_form.working_days }}
+                          </div>
+                        </div>
+                        <!---->
+
+                        <div class="mb-3">
+                          {{ edit_form.start_time.label_tag }}
+                          <!---->
+                          {{ edit_form.start_time }}
+                        </div>
+
+                        <div class="mb-3">
+                          {{ edit_form.end_time.label_tag }}
+                          <!---->
+                          {{ edit_form.end_time }}
+                        </div>
+
+                        <input
+                          type="hidden"
+                          name="affiliation_id"
+                          value="{{ affiliation.id }}"
+                        />
+
+                        <button
+                          type="submit"
+                          name="edit_affiliation"
+                          class="btn__view btn__expand mt-2"
+                        >
+                          Save Changes
+                        </button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </li>
             {% endfor %}
           </ul>
+
           {% else %}
           <p>No affiliated doctors found.</p>
           {% endif %}
@@ -139,4 +224,11 @@
     </div>
   </div>
 </div>
+
+<script>
+  function confirmSave() {
+    return confirm('Are you sure you want to save these changes?');
+  }
+</script>
+
 {% endblock %}
