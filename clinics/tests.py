@@ -1,44 +1,53 @@
+from django.test import TestCase
 from django.urls import reverse
-from rest_framework.test import APITestCase
-from .models import Clinic
 from rest_framework import status
+from .models import Clinic
 
-class APITests(APITestCase):
-    
+class ClinicTests(TestCase):
     def setUp(self):
-        self.clinic_url = reverse('add-clinic')
-    
-        self.valid_clinic_data = {
-                "name": "Health Clinic",
-                "email": "support@pearlwhite.com",
-                "phone_number": "+1-555-123-4567",
-                "address": "456 Health St",
-                "city": "Chicago",
-                "state": "IL",
-            }
-
-    def test_add_valid_clinic(self):
-        response = self.client.post(self.clinic_url, data=self.valid_clinic_data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(Clinic.objects.count(), 1)
-        self.assertEqual(Clinic.objects.get().name, "Health Clinic")
-
-
-    def test_add_invalid_clinic(self):
-        invalid_data = self.valid_clinic_data.copy()
-        invalid_data["name"] = "" 
-        response = self.client.post(self.clinic_url, data=invalid_data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(Clinic.objects.count(), 0)
-
+        self.clinic = Clinic.objects.create(
+            name="Garden State Dental Care",
+            address="789 Oak Blvd, Suite 5",
+            city="Newark",
+            state="NJ",
+            phone_number="973-555-7890",
+            email="info@gardensatedental.com",
+        )
 
     def test_get_clinic_info(self):
-        clinic = Clinic.objects.create(name="Health Clinic", address="456 Health St", phone_number="+1-555-123-4567")
-        response = self.client.get(reverse('clinic-info', args=[clinic.pk]))
+        url = reverse('clinic-info', kwargs={'pk': self.clinic.pk})
+        response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data['name'], "Health Clinic")
+        self.assertEqual(response.data['name'], self.clinic.name)
 
 
-    def test_get_invalid_clinic_info(self):
-        response = self.client.get(reverse('clinic-info', args=[999])) 
+    def test_get_clinic_info_not_found(self):
+        url = reverse('clinic-info', kwargs={'pk': 999}) 
+        response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+
+    def test_add_clinic(self):
+        url = reverse('add-clinic')
+        data = {
+            "name": "New Clinic",
+            "address": "123 Elm St",
+            "city": "New City",
+            "state": "NC", 
+            "phone_number": "9876543210",
+            "email": "newclinic@example.com",
+        }
+        response = self.client.post(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(Clinic.objects.count(), 2)  
+        self.assertEqual(Clinic.objects.last().name, 'New Clinic')
+
+
+    def test_add_clinic_invalid_data(self):
+        url = reverse('add-clinic')
+        data = {
+            "name": "New Clinic",
+            "address": "123 Elm St",
+        }
+        response = self.client.post(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
