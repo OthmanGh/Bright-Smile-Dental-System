@@ -14,7 +14,7 @@ def login(request):
 
         if user is not None:
             auth_login(request, user)
-            return redirect('index')
+            return redirect('clinics')
         else:
             context = {'error': 'Invalid email or password'}
             return render(request, 'landing/login.html', context)
