@@ -168,3 +168,10 @@ curl -X POST http://127.0.0.1:8000/api/patients/
 curl http://127.0.0.1:8000/api/clinics/1/
 
 ```
+
+Running Tests
+-------------
+
+To run the unit tests:
+
+`python manage.py test`
