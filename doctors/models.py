@@ -1,6 +1,7 @@
 from django.db import models
 from multiselectfield import MultiSelectField
 from datetime import time
+from clinics.models import Clinic
 
 class Doctor(models.Model):
     SPECIALTY_CHOICES = (
@@ -33,17 +34,17 @@ class Doctor(models.Model):
 
 class DoctorClinicAffiliation(models.Model):
     DAY_CHOICES = [
-        ('mon', 'Monday'),
-        ('tue', 'Tuesday'),
-        ('wed', 'Wednesday'),
-        ('thu', 'Thursday'),
-        ('fri', 'Friday'),
-        ('sat', 'Saturday'),
-        ('sun', 'Sunday'),
+        ('Mon', 'Monday'),
+        ('Tue', 'Tuesday'),
+        ('Wed', 'Wednesday'),
+        ('Thu', 'Thursday'),
+        ('Fri', 'Friday'),
+        ('Sat', 'Saturday'),
+        ('Sun', 'Sunday'),
     ]
 
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE, related_name='affiliations')
-    clinic = models.ForeignKey('clinics.Clinic', on_delete=models.CASCADE, related_name='doctor_affiliations')
+    clinic = models.ForeignKey(Clinic, on_delete=models.CASCADE, related_name='doctor_affiliations')
     office_address = models.TextField()
     working_days = MultiSelectField(choices=DAY_CHOICES, blank=True)
     start_time = models.TimeField(default=time(9, 0))
@@ -54,3 +55,5 @@ class DoctorClinicAffiliation(models.Model):
 
     def __str__(self):
         return f"{self.doctor.name} at {self.clinic.name}"
+
+
