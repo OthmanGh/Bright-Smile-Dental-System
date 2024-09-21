@@ -6,7 +6,7 @@
 <div class="container my-5">
   <div class="row">
     <div class="col-md-8">
-      <div class="card mb-8">
+      <div class="card mb-5">
         <div class="card-body">
           <h3 class="card-title">{{ doctor.name }}</h3>
 
@@ -68,7 +68,24 @@
     </div>
 
     <div class="col-md-4">
-      <div class="card mb-4">
+      <div class="card mb-5">
+        <div class="card-body">
+          <h4 class="card-title">Affiliated Patients</h4>
+
+          {% if patients %}
+          <ul class="list-unstyled">
+            {% for patient in patients %}
+            <li>{{ patient.name }}</li>
+            {% endfor %}
+          </ul>
+
+          {% else %}
+          <p>No Patients Found</p>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="card mb-5">
         <div class="card-body">
           <h4 class="card-title">Affiliations</h4>
 
@@ -83,23 +100,6 @@
 
           {% else %}
           <p>No Affiliations Found</p>
-          {% endif %}
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-body">
-          <h4 class="card-title">Affiliated Patients</h4>
-
-          {% if patients %}
-          <ul class="list-unstyled">
-            {% for patient in patients %}
-            <li>{{ patient.name }}</li>
-            {% endfor %}
-          </ul>
-
-          {% else %}
-          <p>No Patients Found</p>
           {% endif %}
         </div>
       </div>
