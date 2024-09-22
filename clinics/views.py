@@ -21,7 +21,6 @@ def clinics_list(request):
     return render(request, 'clinics/clinics_list.html', context)
 
 
-
 def clinic_detail(request, pk):
     clinic = get_object_or_404(Clinic, id=pk)
     affiliations = DoctorClinicAffiliation.objects.filter(clinic=clinic)
@@ -41,11 +40,12 @@ def clinic_detail(request, pk):
 
             if affiliation_form.is_valid():
                 new_affiliation = affiliation_form.save(commit=False)
-                new_affiliation.clinic = clinic
+                new_affiliation.clinic = clinic  
                 new_affiliation.save()
                 messages.success(request, 'Doctor affiliation added successfully.')
                 return redirect('clinic', pk=pk)
-        
+
+
         elif 'edit_affiliation' in request.POST:
             affiliation_id = request.POST.get('affiliation_id')
             affiliation = get_object_or_404(DoctorClinicAffiliation, id=affiliation_id)
