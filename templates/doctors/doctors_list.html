@@ -16,23 +16,21 @@
         <h3>{{ doctor.name }}</h3>
 
         <div class="card__content">
-          <div class="card__text__layout">
-            <p class="card__text">NPI: <span>{{ doctor.npi }}</span></p>
-            <p class="card__text">
-              Specialties: <span>{{ doctor.specialties|join:", " }}</span>
-            </p>
-          </div>
+          <p class="card__text">NPI: <span>{{ doctor.npi }}</span></p>
 
-          <div class="card__text__layout">
-            <p class="card__text">
-              Affiliated Clinics: <span>{{ doctor.num_clinics }}</span>
-            </p>
-            <p class="card__text">
-              Affiliated Patients: <span>{{ doctor.num_patients }}</span>
-            </p>
-          </div>
-          <p>Phone: <span>{{ doctor.phone_number }}</span></p>
           <p>Email: <span>{{ doctor.email }}</span></p>
+
+          <p class="card__text">
+            Specialties: <span>{{ doctor.specialties|join:", " }}</span>
+          </p>
+
+          <p class="card__text">
+            Affiliated Clinics: <span>{{ doctor.num_clinics }}</span>
+          </p>
+
+          <p class="card__text">
+            Affiliated Patients: <span>{{ doctor.num_patients }}</span>
+          </p>
 
           <a href="{% url 'doctor' doctor.pk %}" class="btn__view"
             >View Details</a
