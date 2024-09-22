@@ -15,16 +15,22 @@ class DoctorForm(forms.ModelForm):
         
 
 class DoctorClinicAffiliationForm(forms.ModelForm):
+    doctor = forms.ModelChoiceField(
+        queryset=Doctor.objects.all(),
+        empty_label="Select Doctor",
+        widget=forms.Select(attrs={'class': 'form-select'})
+    )
+
     class Meta:
         model = DoctorClinicAffiliation
-        fields = ['doctor', 'clinic', 'office_address', 'working_days', 'start_time', 'end_time']
+        fields = ['doctor', 'office_address', 'working_days', 'start_time', 'end_time']
         widgets = {
-            'office_address': forms.Textarea(attrs={'rows': 3}),
-            'working_days': forms.CheckboxSelectMultiple(),
-            'start_time': forms.TimeInput(format='%H:%M', attrs={'type': 'time'}),
-            'end_time': forms.TimeInput(format='%H:%M', attrs={'type': 'time'}),
+            'office_address': forms.Textarea(attrs={'rows': 3, 'class': 'form-control'}),
+            'working_days': forms.CheckboxSelectMultiple(attrs={'class': 'form-check'}),
+            'start_time': forms.TimeInput(format='%H:%M', attrs={'type': 'time', 'class': 'form-control'}),
+            'end_time': forms.TimeInput(format='%H:%M', attrs={'type': 'time', 'class': 'form-control'}),
         }
-    
+
 
 class AffiliationEditForm(forms.ModelForm):
     class Meta:
